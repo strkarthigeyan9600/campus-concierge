@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Smart AI Campus Concierge Kiosk</title>
+  <meta name="description" content="Intelligent campus concierge kiosk assisting student, visitor, parent, faculty and alumni.">
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- SEO & UI accessibility tags -->
+  <meta name="theme-color" content="#0b0d16">
+</head>
+<body>
+
+  <!-- Core Kiosk Frame Shell -->
+  <div class="kiosk-shell" id="kiosk-mainframe">
+    
+    <!-- Top banner clock, weather and quick actions -->
+    <header class="kiosk-header">
+      <div class="header-logo">
+        <div class="logo-icon">▲</div>
+        <div style="display:flex; flex-direction:column;">
+          <h1 id="header-logo-title">Welcome to Nexus Campus</h1>
+          <span style="font-size:10px; color:var(--text-tertiary); font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Campus Information Kiosk</span>
+        </div>
+      </div>
+      
+      <!-- Center Persona Quick Switch Panel -->
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:11px; font-weight:600; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:0.5px; margin-right:4px;">Filter Persona:</span>
+        <div class="persona-selector-row">
+          <button class="persona-btn active" data-persona="visitor" id="btn-p-visitor">Visitor</button>
+          <button class="persona-btn" data-persona="fresher" id="btn-p-fresher">Fresher</button>
+          <button class="persona-btn" data-persona="parent" id="btn-p-parent">Parent</button>
+          <button class="persona-btn" data-persona="faculty" id="btn-p-faculty">Faculty</button>
+          <button class="persona-btn" data-persona="alumni" id="btn-p-alumni">Alumni</button>
+          <button class="persona-btn" data-persona="staff" id="btn-p-staff">Staff</button>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Live status widgets -->
+        <div class="status-widgets">
+          <div class="widget-item weather" id="header-weather-val">⛅ Loading Weather...</div>
+          <div class="widget-item date" id="header-date-val">-- --</div>
+          <div class="widget-item clock" id="header-clock-val">00:00:00</div>
+        </div>
+        
+        <!-- Language selector dropdown -->
+        <div class="header-language-selector">
+          <select id="header-language-select" aria-label="Select Language">
+            <option value="en">English (EN)</option>
+            <option value="hi">हिन्दी (HI)</option>
+            <option value="es">Español (ES)</option>
+            <option value="zh">中文 (ZH)</option>
+          </select>
+        </div>
+        
+        <!-- Urgent emergency trigger -->
+        <button class="emergency-btn" id="header-emergency-btn">🚨 <strong>Emergency Access</strong></button>
+      </div>
+    </header>
+
+    <!-- Lower Workspace Area -->
+    <div class="kiosk-workspace">
+      
+      <!-- Left sidebar navigation list -->
+      <nav class="kiosk-sidebar" aria-label="Main Navigation">
+        <div>
+          <!-- Home button to return to welcome screen -->
+          <div class="sidebar-nav-list" style="margin-bottom: 12px;">
+            <a href="#" class="sidebar-nav-link home-return-btn" data-screen="home" id="nav-return-home">
+              <span>🏠 Return to Welcome</span>
+              <span></span>
+            </a>
+          </div>
+          
+          <div class="sidebar-section-title">Concierge Hub</div>
+          <div class="sidebar-nav-list">
+            <a href="#" class="sidebar-nav-link active" data-screen="home" id="nav-home" style="display:none;">
+              <span>🏠 Home Dashboard</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="map" id="nav-map">
+              <span>🗺️ Campus Map & Paths</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="assistant" id="nav-assistant">
+              <span>💬 Ask AI Concierge</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+          </div>
+
+          <div class="sidebar-section-title">Guides & Resources</div>
+          <div class="sidebar-nav-list">
+            <a href="#" class="sidebar-nav-link" data-screen="admissions" id="nav-admissions">
+              <span>🎓 Admissions Cell</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="student_guide" id="nav-student-guide">
+              <span>🎒 Student Guide</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="parent_guide" id="nav-parent-guide">
+              <span>👪 Parent Guide</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="faculty" id="nav-faculty">
+              <span>👨‍🏫 Faculty Finder</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+          </div>
+
+          <div class="sidebar-section-title">Facilities & Fleet</div>
+          <div class="sidebar-nav-list">
+            <a href="#" class="sidebar-nav-link" data-screen="bus" id="nav-bus">
+              <span>🚍 Bus Routes</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="hostel" id="nav-hostel">
+              <span>🏢 Hostel Board</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="canteen" id="nav-canteen">
+              <span>🍜 Main Canteen</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="events" id="nav-events">
+              <span>📅 Events Calendar</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+          </div>
+
+          <div class="sidebar-section-title">System Panel</div>
+          <div class="sidebar-nav-list">
+            <a href="#" class="sidebar-nav-link" data-screen="analytics" id="nav-analytics">
+              <span>📊 Kiosk Analytics</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="admin" id="nav-admin">
+              <span>⚙️ Admin Portal</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+            <a href="#" class="sidebar-nav-link" data-screen="emergency" id="nav-emergency">
+              <span>🚨 Emergency Safety</span>
+              <span class="nav-relevance-badge">Recommended</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="kiosk-info-card">
+            <strong>Kiosk ID:</strong> NX-K01<br>
+            <strong>Version:</strong> v2.4 (Enterprise)
+          </div>
+        </div>
+      </nav>
+
+      <!-- Right Screen Container Panes -->
+      <main class="kiosk-screen-content">
+        
+        <!-- 1. HOME SCREEN -->
+        <section class="screen-container active" id="screen-home">
+          <!-- Top bar (Scan QR tag) -->
+          <div class="home-qr-banner-row">
+            <div class="qr-access-tag" onclick="window.app.syncWithMobile('Kiosk Sync', 'Welcome Portal')">
+              <span>📱 Scan QR For Quick Access</span>
+            </div>
+          </div>
+          
+          <div class="home-hero-text">
+            <h2>Welcome! How Can We Help You?</h2>
+            <p>Select An Option Below To Get Started</p>
+          </div>
+          
+          <!-- Primary touch cards grid -->
+          <div class="home-kiosk-cards-grid">
+            <div class="kiosk-touch-card purple-card" onclick="window.app.switchScreen('map')">
+              <div class="touch-card-icon">🗺️</div>
+              <div class="touch-card-content">
+                <h3>Campus Pathfinder</h3>
+                <p>Interactive maps, room finder & wheelchair paths</p>
+              </div>
+              <div class="touch-card-arrow">→</div>
+            </div>
+            
+            <div class="kiosk-touch-card teal-card" onclick="window.app.switchScreen('assistant')">
+              <div class="touch-card-icon">💬</div>
+              <div class="touch-card-content">
+                <h3>Ask AI Concierge</h3>
+                <p>Voice-assisted RAG chatbot advisor</p>
+              </div>
+              <div class="touch-card-arrow">→</div>
+            </div>
+
+            <div class="kiosk-touch-card emerald-card" onclick="window.app.switchScreen('canteen')">
+              <div class="touch-card-icon">🍜</div>
+              <div class="touch-card-content">
+                <h3>Canteen & Shuttles</h3>
+                <p>Check live cafeteria menus & campus bus GPS</p>
+              </div>
+              <div class="touch-card-arrow">→</div>
+            </div>
+
+            <div class="kiosk-touch-card amber-card" onclick="window.app.switchScreen('admissions')">
+              <div class="touch-card-icon">🎓</div>
+              <div class="touch-card-content">
+                <h3>Admissions & Guides</h3>
+                <p>Read courses, hostel rules, fees & calendars</p>
+              </div>
+              <div class="touch-card-arrow">→</div>
+            </div>
+          </div>
+          
+          <!-- How does this work section -->
+          <div class="home-process-section">
+            <h4>How Does This Work?</h4>
+            <p class="process-subtitle">3 Simple Steps To Get Started</p>
+            
+            <div class="process-steps-flex">
+              <div class="process-step-item">
+                <div class="step-icon-circle">👆</div>
+                <h5>1. Tap Option</h5>
+                <p>Select a navigation target or ask a question.</p>
+              </div>
+              <div class="process-step-item">
+                <div class="step-icon-circle">🔍</div>
+                <h5>2. Explore Paths</h5>
+                <p>View step-by-step paths or RAG summaries.</p>
+              </div>
+              <div class="process-step-item">
+                <div class="step-icon-circle">📲</div>
+                <h5>3. Scan & Carry</h5>
+                <p>Sync routes and tickets directly to your phone.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Reset timer progress bar -->
+          <div class="kiosk-reset-timer-bar">
+            <div class="timer-progress-track">
+              <div class="timer-progress-fill" id="kiosk-idle-progress"></div>
+            </div>
+            <span class="timer-label">Screen Resets In <strong id="kiosk-idle-seconds">45</strong>s</span>
+          </div>
+        </section>
+
+        <!-- 2. CAMPUS MAP SCREEN -->
+        <section class="screen-container" id="screen-map">
+          <div class="screen-header">
+            <div>
+              <h2>Interactive Campus Navigation</h2>
+              <p>Dijkstra pathfinding, wheelchair accessibility paths and walking estimations</p>
+            </div>
+            <div>
+              <button class="kiosk-btn-mini primary" onclick="window.app.syncWithMobile('Directions Map', 'Campus Route')">📲 Sync to Phone</button>
+            </div>
+          </div>
+          
+          <div class="map-layout-grid">
+            <!-- Left map canvas view -->
+            <div class="map-viewport-container">
+              <canvas id="navigation-canvas"></canvas>
+            </div>
+            
+            <!-- Right directions list details -->
+            <div class="map-controls-panel">
+              <div class="card-premium">
+                <h3 style="font-family:var(--font-title); font-size:15px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">Route Builder</h3>
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                  <div class="map-control-group">
+                    <label for="map-start-select">Starting Point</label>
+                    <select id="map-start-select"></select>
+                  </div>
+                  <div class="map-control-group">
+                    <label for="map-end-select">Destination</label>
+                    <select id="map-end-select"></select>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+                    <input type="checkbox" id="map-access-checkbox" style="width:18px; height:18px; cursor:pointer;" id="chk-access">
+                    <label for="map-access-checkbox" style="cursor:pointer; font-size:11.5px; font-weight:600; text-transform:none;">Wheelchair Accessible Route</label>
+                  </div>
+                  <div style="display:flex; gap:10px; margin-top:8px;">
+                    <button class="kiosk-btn-mini primary" style="flex:1;" onclick="window.app.mapController.clearRoute(); document.getElementById('map-start-select').value=''; document.getElementById('map-end-select').value='';">Clear Route</button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card-premium directions-card">
+                <h3 style="font-family:var(--font-title); font-size:15px; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.5px;">Navigation Summary</h3>
+                <div class="directions-summary-stats">
+                  <div class="stat-item">
+                    <small>Distance</small>
+                    <strong id="map-summary-distance">--</strong>
+                  </div>
+                  <div class="stat-item">
+                    <small>Est. Walk Time</small>
+                    <strong id="map-summary-time">--</strong>
+                  </div>
+                </div>
+                <ul id="map-summary-steps">
+                  <li style="color:var(--text-tertiary); justify-content:center; text-align:center; padding-top:20px;">
+                    Please select starting point and destination building to generate paths.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. AI CHATBOT SCREEN -->
+        <section class="screen-container" id="screen-assistant">
+          <div class="screen-header">
+            <div>
+              <h2>AI Assistant & Campus RAG Desk</h2>
+              <p>Natural speech recognition voice synthesis and grounded answers</p>
+            </div>
+            <div>
+              <button class="kiosk-btn-mini" id="chat-voice-synthesis-toggle" aria-label="Toggle Voice Output"><span>🔊 Voice On</span></button>
+            </div>
+          </div>
+          
+          <div class="chat-layout-container">
+            <!-- Messages feed -->
+            <div class="chat-messages-viewport" id="chat-bubbles-container"></div>
+            
+            <!-- Input text microphone panel -->
+            <div class="chat-input-bar-tray">
+              <button class="mic-toggle-btn" id="chat-mic-btn" aria-label="Toggle Speech Input" title="Speech Input">🎙️</button>
+              <div class="chat-text-input-wrapper">
+                <input type="text" id="chat-query-input" placeholder="Type something or ask 'Where is Tech Block A?'..." aria-label="Ask AI Assistant">
+              </div>
+              <button class="kiosk-btn primary" id="chat-send-btn" style="height:52px;">Send ✈️</button>
+            </div>
+          </div>
+          
+          <!-- Voice listening animation overlay -->
+          <div class="voice-wave-container" id="chat-voice-wave-widget" style="position: absolute; bottom: 80px; left: 24px; z-index: 100;">
+            <div class="voice-waveform-graphic" id="chat-voice-waveform">
+              <div class="waveform-bar"></div>
+              <div class="waveform-bar"></div>
+              <div class="waveform-bar"></div>
+              <div class="waveform-bar"></div>
+              <div class="waveform-bar"></div>
+            </div>
+            <span id="chat-voice-status-text" style="font-size:12px; font-weight:600; color:var(--text-secondary);">Tap microphone to speak</span>
+          </div>
+        </section>
+
+        <!-- 4. ADMISSIONS CELL -->
+        <section class="screen-container" id="screen-admissions">
+          <div class="screen-header">
+            <div>
+              <h2>Admissions cell & Courses</h2>
+              <p>Eligibility, course structures, fee outlines, dates and required documentation checklist</p>
+            </div>
+          </div>
+          
+          <div class="admissions-grid-layout">
+            <!-- Eligibility Criteria -->
+            <div class="card-premium">
+              <h3 style="font-family:var(--font-title); font-size:17px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">⚖️ Program Eligibility Criteria</h3>
+              <div style="display:flex; flex-direction:column; gap:12px; font-size:13.5px; line-height:1.5;">
+                <div>
+                  <strong>B.Tech Courses:</strong>
+                  <p style="color:var(--text-secondary); margin-top:2px;" id="adm-eligibility-undergrad">Loading Undergrad info...</p>
+                </div>
+                <div>
+                  <strong>M.Tech Courses:</strong>
+                  <p style="color:var(--text-secondary); margin-top:2px;" id="adm-eligibility-postgrad">Loading Postgrad info...</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Required Documents Checklists -->
+            <div class="card-premium">
+              <h3 style="font-family:var(--font-title); font-size:17px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">📜 Verification Documents Checklist</h3>
+              <ul class="checklist-list" id="adm-docs-list"></ul>
+            </div>
+          </div>
+
+          <div class="admissions-grid-layout">
+            <!-- Key Timelines Dates -->
+            <div class="card-premium">
+              <h3 style="font-family:var(--font-title); font-size:17px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">📅 Counselling Schedule & Important Dates</h3>
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Academic Milestones</th>
+                    <th>Deadline Dates</th>
+                  </tr>
+                </thead>
+                <tbody id="adm-dates-tbody"></tbody>
+              </table>
+            </div>
+            
+            <!-- Fee Waiver Policies -->
+            <div class="card-premium">
+              <h3 style="font-family:var(--font-title); font-size:17px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">💸 Merit & Financial Scholarships</h3>
+              <div id="adm-scholarships-box" style="font-size:13px; line-height:1.5; color:var(--text-secondary);">
+                <p>• <strong>JEE Rank Holders:</strong> 100% Tuition Fee waiver for JEE ranks under 1000.</p><br>
+                <p>• <strong>Socio-Economic Scholarship:</strong> Up to 50% waiver for income bracket &lt; 3 LPA.</p><br>
+                <p>• <strong>State Sports Quota:</strong> 25% waiver for official state level certificates.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card-premium" style="margin-top:20px;">
+            <h3 style="font-family:var(--font-title); font-size:17px; margin-bottom:14px;">🎓 Offered B.Tech / M.Tech Programs</h3>
+            <div class="admissions-courses-flex" id="admissions-courses-list"></div>
+          </div>
+        </section>
+
+        <!-- 5. STUDENT GUIDE -->
+        <section class="screen-container" id="screen-student_guide">
+          <div class="screen-header">
+            <div>
+              <h2>Undergraduate & Student Guide</h2>
+              <p>Campus labs, transport setups, green bike fleet, hostels, canteens, placements, and recreation hubs</p>
+            </div>
+          </div>
+          
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div class="guide-flex-grid">
+              <div class="card-premium guide-card">
+                <h4>🔬 Advanced Laboratories</h4>
+                <p>High Performance Robotics and IoT Systems center. Block A, second floor. Fully accessible for students.</p>
+              </div>
+              <div class="card-premium guide-card">
+                <h4>🤝 Startup Incubation Hub</h4>
+                <p>Incubation facilities, seed grants, and mentor cells. Central Library Block, Third floor.</p>
+              </div>
+              <div class="card-premium guide-card">
+                <h4>⚽ Sports Complex Arena</h4>
+                <p>Badminton courts, fitness studio, tennis courts, and track field. Active timings: 6:00 AM - 9:00 PM.</p>
+              </div>
+            </div>
+            
+            <h3 style="font-family:var(--font-title); font-size:18px; margin-top:10px;">🚲 Green Campus Mobility & Transport</h3>
+            <div class="guide-flex-grid" id="student-transport-grid"></div>
+            
+            <h3 style="font-family:var(--font-title); font-size:18px; margin-top:10px;">🌟 Campus Placement Records</h3>
+            <div class="card-premium">
+              <div style="display:flex; justify-content:space-around; text-align:center; padding:10px 0;">
+                <div>
+                  <h4 style="font-size:28px; color:var(--accent-primary); font-family:var(--font-title);">44 LPA</h4>
+                  <small style="color:var(--text-tertiary);">Highest Package Offered</small>
+                </div>
+                <div>
+                  <h4 style="font-size:28px; color:var(--accent-success); font-family:var(--font-title);">94%</h4>
+                  <small style="color:var(--text-tertiary);">Placement Success Rate</small>
+                </div>
+                <div>
+                  <h4 style="font-size:28px; color:var(--accent-warning); font-family:var(--font-title);">250+</h4>
+                  <small style="color:var(--text-tertiary);">Recruiting Partners</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. PARENT GUIDE -->
+        <section class="screen-container" id="screen-parent_guide">
+          <div class="screen-header">
+            <div>
+              <h2>Parent Consultations Guide</h2>
+              <p>Key administrative directories, principal counseling counters, accounts departments and hostel warden slots</p>
+            </div>
+          </div>
+          
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div class="guide-flex-grid" id="parent-offices-grid"></div>
+            
+            <div class="card-premium">
+              <h3 style="font-family:var(--font-title); font-size:17px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">⚠️ Important Safety Contacts for Parents</h3>
+              <div style="display:flex; justify-content:space-between; gap:20px; font-size:13.5px; line-height:1.5;">
+                <div style="flex:1;">
+                  <strong>Chief Hostel Warden Desk:</strong><br>
+                  <span style="color:var(--text-secondary);">📞 +91 99999 88800 | ✉️ chief.warden@nit.edu</span>
+                </div>
+                <div style="flex:1;">
+                  <strong>Student Wellness Counselor:</strong><br>
+                  <span style="color:var(--text-secondary);">📞 +91 99999 77700 | ✉️ wellness@nit.edu</span>
+                </div>
+                <div style="flex:1;">
+                  <strong>Registrar Complaint cell:</strong><br>
+                  <span style="color:var(--text-secondary);">📞 +91 99999 11002 | ✉️ registrar@nit.edu</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. FACULTY FINDER -->
+        <section class="screen-container" id="screen-faculty">
+          <div class="screen-header">
+            <div>
+              <h2>Faculty Finder Directory</h2>
+              <p>Cabin allocations, emails, consultation schedules, and maps directions lookup</p>
+            </div>
+          </div>
+          
+          <!-- Faculty grid lists -->
+          <div class="faculty-flex-grid" id="faculty-grid-list"></div>
+        </section>
+
+        <!-- 8. BUS FLEET ROUTES -->
+        <section class="screen-container" id="screen-bus">
+          <div class="screen-header">
+            <div>
+              <h2>Campus Bus management</h2>
+              <p>City routes schedules, real-time GPS locations and delay alert markers</p>
+            </div>
+          </div>
+          
+          <!-- Bus cards details -->
+          <div class="bus-cards-grid" id="bus-routes-grid"></div>
+        </section>
+
+        <!-- 9. HOSTEL LIFE BOARD -->
+        <section class="screen-container" id="screen-hostel">
+          <div class="screen-header">
+            <div>
+              <h2>Campus Hostels Guidelines</h2>
+              <p>Hostel wardens, security rules, mess schedules, visitor gates policies</p>
+            </div>
+          </div>
+          
+          <div class="hostels-columns-flex" id="hostels-flex-list"></div>
+        </section>
+
+        <!-- 10. MAIN CANTEEN COUNTER -->
+        <section class="screen-container" id="screen-canteen">
+          <div class="screen-header">
+            <div>
+              <h2>Main Food Court Canteen</h2>
+              <p>Live order queue lengths, menu item pricing, calorie values and quick order sync</p>
+            </div>
+          </div>
+          
+          <!-- Canteen queue metrics -->
+          <div class="canteen-queue-status-bar">
+            <div class="card-premium canteen-q-stat-card">
+              <small>People in Queue</small>
+              <div id="canteen-queue-count">0</div>
+            </div>
+            <div class="card-premium canteen-q-stat-card">
+              <small>Est. Queue Wait</small>
+              <div id="canteen-queue-wait">0 mins</div>
+            </div>
+            <div class="card-premium canteen-q-stat-card">
+              <small>Kitchen load Traffic</small>
+              <div style="margin-top:6px;"><span id="canteen-queue-traffic" class="status-badge green">Low</span></div>
+            </div>
+          </div>
+
+          <!-- Menu categories listing -->
+          <div style="display:flex; flex-direction:column; gap:24px;">
+            <div>
+              <h3 style="font-family:var(--font-title); font-size:18px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">🍳 Breakfast Counter (7:30 AM - 10:30 AM)</h3>
+              <div class="canteen-items-grid" id="canteen-breakfast-grid"></div>
+            </div>
+            
+            <div>
+              <h3 style="font-family:var(--font-title); font-size:18px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">🍛 Special Luncheons (12:30 PM - 3:00 PM)</h3>
+              <div class="canteen-items-grid" id="canteen-lunch-grid"></div>
+            </div>
+            
+            <div>
+              <h3 style="font-family:var(--font-title); font-size:18px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">🍿 Beverages & Evening Snacks</h3>
+              <div class="canteen-items-grid" id="canteen-snacks-grid"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 11. EMERGENCY SAFETY -->
+        <section class="screen-container" id="screen-emergency">
+          <div class="screen-header">
+            <div>
+              <h2>Emergency Safety Assistance</h2>
+              <p>24/7 security desks, first aid clinics, fire escape marshals and quick dialing routes</p>
+            </div>
+          </div>
+          
+          <div style="display:flex; flex-direction:column; gap:20px;">
+            <div class="emergency-grid" id="emergency-contacts-grid"></div>
+            
+            <div class="card-premium">
+              <h3 style="font-family:var(--font-title); font-size:18px; color:var(--accent-danger); margin-bottom:12px;">🚨 Medical clinic emergency procedures</h3>
+              <div style="font-size:13.5px; color:var(--text-secondary); line-height:1.6;">
+                <p>1. <strong>Locate AEDs:</strong> Automated Defibrillators are located on the ground floor lobby of TBA, ADM, and SCB blocks.</p>
+                <p>2. <strong>Ambulance Access:</strong> Callout dispatch handles stretcher pick-ups from any building portal within 4 minutes.</p>
+                <p>3. <strong>Observation Wards:</strong> Medical clinic houses a 6-bed active patient monitoring zone. Doctors are stationed 24/7.</p>
+              </div>
+              <div style="margin-top:16px;">
+                <button class="kiosk-btn primary" onclick="window.app.locateOnMap('hospital')">🗺️ Show Clinic Directions</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 12. EVENTS CALENDAR -->
+        <section class="screen-container" id="screen-events">
+          <div class="screen-header">
+            <div>
+              <h2>Academic Calendar & Events</h2>
+              <p>Hackathons, workshops, placements drives and guest lectures</p>
+            </div>
+          </div>
+          
+          <!-- Event timelines flex lists -->
+          <div class="events-timeline" id="events-timeline-list"></div>
+        </section>
+
+        <!-- 13. KIOSK ANALYTICS -->
+        <section class="screen-container" id="screen-analytics">
+          <div class="screen-header">
+            <div>
+              <h2>Kiosk analytics reports</h2>
+              <p>Real-time visitors charts, popular destinations and frequent question queries</p>
+            </div>
+          </div>
+          
+          <div class="analytics-metrics-grid" style="margin-bottom:20px;">
+            <div class="card-premium" style="text-align:center;">
+              <small style="font-size:11px; text-transform:uppercase; color:var(--text-tertiary); font-weight:600;">Total Active Sessions</small>
+              <h3 id="stat-sessions-val" style="font-size:42px; font-family:var(--font-title); color:var(--accent-primary); margin-top:8px;">0</h3>
+            </div>
+            <div class="card-premium" style="text-align:center;">
+              <small style="font-size:11px; text-transform:uppercase; color:var(--text-tertiary); font-weight:600;">Average Session Duration</small>
+              <h3 id="stat-avgtime-val" style="font-size:42px; font-family:var(--font-title); color:var(--accent-success); margin-top:8px;">0m 0s</h3>
+            </div>
+          </div>
+
+          <div class="analytics-metrics-grid">
+            <!-- Line Graph -->
+            <div class="card-premium analytics-card">
+              <h4>Daily Kiosk Visitor Count</h4>
+              <div class="analytics-chart-viewport" id="analytics-line-chart"></div>
+            </div>
+            
+            <!-- Bar Graph -->
+            <div class="card-premium analytics-card">
+              <h4>Most Searched Destinations</h4>
+              <div class="analytics-chart-viewport" id="analytics-bar-chart"></div>
+            </div>
+          </div>
+
+          <div class="analytics-metrics-grid" style="margin-top:20px;">
+            <!-- Language Metrics -->
+            <div class="card-premium analytics-card">
+              <h4>Kiosk Language Usage Metrics</h4>
+              <div class="analytics-chart-viewport" id="analytics-pie-chart" style="display:flex; flex-direction:column; justify-content:center;"></div>
+            </div>
+            
+            <!-- Frequent Queries -->
+            <div class="card-premium analytics-card">
+              <h4>Frequently Asked Queries (Top RAG hits)</h4>
+              <div class="queries-list-flex" id="analytics-queries-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 14. ADMIN PANEL -->
+        <section class="screen-container" id="screen-admin">
+          <div class="screen-header">
+            <div>
+              <h2>Administrator Panel</h2>
+              <p>Manage campus database: CRUD operations on buildings, staff, calendar events, bus schedules and canteen menus</p>
+            </div>
+            <div>
+              <button class="kiosk-btn-mini primary" onclick="if(confirm('Reset all values to defaults?')) { window.db.resetToDefaults(); window.app.renderAll(); window.admin.renderAdminTables(); }">🔄 Reset Database</button>
+            </div>
+          </div>
+          
+          <!-- Category tab bar controllers -->
+          <div class="admin-tabs-row">
+            <button class="kiosk-btn-mini primary" onclick="window.admin.editItem('building', null)">➕ Add Building</button>
+            <button class="kiosk-btn-mini primary" onclick="window.admin.editItem('faculty', null)">➕ Add Faculty</button>
+            <button class="kiosk-btn-mini primary" onclick="window.admin.editItem('event', null)">➕ Create Event</button>
+            <button class="kiosk-btn-mini primary" onclick="window.admin.editItem('canteen', null)">➕ Add Food Item</button>
+            <button class="kiosk-btn-mini primary" onclick="window.admin.editItem('bus', null)">➕ Add Bus Route</button>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:24px; margin-top:14px;">
+            <!-- Buildings CRUD -->
+            <div class="card-premium">
+              <h4 style="font-family:var(--font-title); font-size:14px; margin-bottom:12px; text-transform:uppercase; color:var(--text-secondary);">🏢 Buildings Management</h4>
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Code</th>
+                      <th>Building Name</th>
+                      <th>Grid Coord</th>
+                      <th>Floor/Rooms</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-buildings-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Faculty CRUD -->
+            <div class="card-premium">
+              <h4 style="font-family:var(--font-title); font-size:14px; margin-bottom:12px; text-transform:uppercase; color:var(--text-secondary);">👨‍🏫 Faculty Member Directory Management</h4>
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Name / Title</th>
+                      <th>Department</th>
+                      <th>Cabin Room</th>
+                      <th>Hours</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-faculty-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Events CRUD -->
+            <div class="card-premium">
+              <h4 style="font-family:var(--font-title); font-size:14px; margin-bottom:12px; text-transform:uppercase; color:var(--text-secondary);">📅 Events Calendars</h4>
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Event Title</th>
+                      <th>Schedule Date</th>
+                      <th>Venue</th>
+                      <th>Organizer</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-events-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Canteen items CRUD -->
+            <div class="card-premium">
+              <h4 style="font-family:var(--font-title); font-size:14px; margin-bottom:12px; text-transform:uppercase; color:var(--text-secondary);">🍜 Canteen Food Counters Menu</h4>
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Dish Name</th>
+                      <th>Category</th>
+                      <th>Pricing</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-canteen-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Bus Loops CRUD -->
+            <div class="card-premium">
+              <h4 style="font-family:var(--font-title); font-size:14px; margin-bottom:12px; text-transform:uppercase; color:var(--text-secondary);">🚍 Bus Routes & Timetables</h4>
+              <div class="admin-table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Route Name</th>
+                      <th>Schedule Timings</th>
+                      <th>GPS Status</th>
+                      <th>Availability</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-buses-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <!-- OVERLAY MODALS -->
+  
+  <!-- 1. Building details floor lookup room finder modal -->
+  <div class="modal-overlay" id="building-detail-modal">
+    <div class="modal-content building-detail-card">
+      <button class="modal-close-btn" id="detail-modal-close" aria-label="Close Modal">&times;</button>
+      <h3 id="detail-modal-title" style="font-family:var(--font-title); font-size:20px; margin-bottom:8px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">Building Details</h3>
+      <p id="detail-modal-desc" style="font-size:13.5px; color:var(--text-secondary); line-height:1.5; margin-bottom:12px;"></p>
+      
+      <div style="font-size:13px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; margin-top:14px;">Rooms & Cabin Allocations:</div>
+      <ul class="detail-rooms-list" id="detail-modal-rooms"></ul>
+      
+      <div style="font-size:13px; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.5px; margin-top:14px;">Accessibility Facilities:</div>
+      <p id="detail-modal-access" style="font-size:13px; color:var(--text-secondary); margin-bottom:20px;"></p>
+      
+      <div style="display:flex; gap:10px;">
+        <button class="kiosk-btn primary" id="detail-modal-route-end" style="flex:1; justify-content:center;">🗺️ Route To Here</button>
+        <button class="kiosk-btn" id="detail-modal-route-start" style="flex:1; justify-content:center;">📍 Set as Start</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Admin CRUD creator/editor Modal -->
+  <div class="modal-overlay" id="admin-edit-modal">
+    <div class="modal-content">
+      <button class="modal-close-btn" onclick="window.admin.closeModal()" aria-label="Close Modal">&times;</button>
+      <h3 id="admin-modal-title" style="font-family:var(--font-title); font-size:18px; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:6px;">Edit Item</h3>
+      
+      <!-- Input fields will insert dynamically depending on active CRUD category -->
+      <form id="admin-edit-form" onsubmit="event.preventDefault(); window.admin.saveModalChanges();">
+        <div id="admin-modal-fields-container" style="max-height: 50vh; overflow-y: auto; padding-right: 6px;"></div>
+        
+        <div style="display:flex; gap:10px; margin-top:20px; border-top:1px solid var(--border-color); padding-top:14px;">
+          <button type="submit" class="kiosk-btn primary" style="flex:1; justify-content:center;">Save Changes</button>
+          <button type="button" class="kiosk-btn" style="flex:1; justify-content:center;" onclick="window.admin.closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Urgent emergency phone dialing lookup Modal -->
+  <div class="modal-overlay" id="emergency-modal">
+    <div class="modal-content" style="border-color: var(--accent-danger);">
+      <button class="modal-close-btn" id="emergency-modal-close" aria-label="Close Modal">&times;</button>
+      <h3 style="font-family:var(--font-title); font-size:20px; color:var(--accent-danger); margin-bottom:12px; display:flex; align-items:center; gap:8px;">🚨 Urgent Assistance Desk</h3>
+      <p style="font-size:13.5px; color:var(--text-secondary); line-height:1.5; margin-bottom:16px;">This kiosk is connected directly to campus crisis control. In case of immediate safety threats, medical collapses, or fire hazards, dial the numbers below or run directly to the designated stations.</p>
+      
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div class="emergency-contact-card urgent" style="padding:14px;">
+          <h4 style="margin-bottom:4px;">🚨 Campus Security Central Desk</h4>
+          <div class="phone-number" style="font-size:20px; margin-bottom:4px;">+91 99999 00000</div>
+          <small style="color:var(--text-secondary);">Direct dispatch, medical alarms, portal gates locking control</small>
+        </div>
+        <div class="emergency-contact-card urgent" style="padding:14px;">
+          <h4 style="margin-bottom:4px;">🚑 Hospital Ambulance Bay</h4>
+          <div class="phone-number" style="font-size:20px; margin-bottom:4px;">+91 99999 11111</div>
+          <small style="color:var(--text-secondary);">Campus clinic ambulance sirens deployment</small>
+        </div>
+      </div>
+      
+      <div style="margin-top:18px; display:flex; gap:10px;">
+        <button class="kiosk-btn primary" style="background:var(--accent-danger); border-color:#b91c1c; flex:1; justify-content:center;" onclick="window.app.locateOnMap('hospital'); document.getElementById('emergency-modal').classList.remove('active');">🗺️ Route to Medical Clinic</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Sync direction/details with mobile using simulated QR code Modal -->
+  <div class="modal-overlay" id="qr-modal">
+    <div class="modal-content" style="max-width:320px; text-align:center;">
+      <button class="modal-close-btn" id="qr-modal-close" aria-label="Close Modal">&times;</button>
+      <h3 style="font-family:var(--font-title); font-size:18px; margin-bottom:10px;">📲 Sync to Mobile</h3>
+      <p id="qr-content-label" style="font-size:12.5px; color:var(--text-secondary); line-height:1.5; margin-bottom:16px;">Scan this code to transfer details.</p>
+      
+      <!-- Simulated QR code canvas -->
+      <div id="qr-code-canvas-container" style="display:flex; justify-content:center; margin-bottom:16px;"></div>
+      
+      <button class="kiosk-btn" style="width:100%; justify-content:center;" onclick="document.getElementById('qr-modal').classList.remove('active');">Close Window</button>
+    </div>
+  </div>
+
+  <!-- JavaScript engines loading -->
+  <script src="data.js"></script>
+  <script src="map.js"></script>
+  <script src="ai.js"></script>
+  <script src="admin.js"></script>
+  <script src="analytics.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
